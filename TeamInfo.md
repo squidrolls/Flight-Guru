@@ -6,14 +6,14 @@
 | ----------- | ---------------------- |
 | TeamID      |        Team-065        |
 | TeamName    |         team065        |
-| Captain     |                        |
-| Captain     |                        |
-| Member1     |                        |
-| Member1     |                        |
-| Member2     |                        |
-| Member2     |                        |
-| Member3     |                        |
-| Member3     |                        |
+| Captain     |      Jake Hunnius      |
+| Captain     | hunnius2@illinois.edu  |
+| Member1     | David Valencia Sanchez |
+| Member1     |  dvalen25@illinois.edu |
+| Member2     |  Christopher Wang      |
+| Member2     | ctwang3@illinois.edu   |
+| Member3     |     Yijing Yang        |
+| Member3     | yijingy2@illinois.edu  |
 
 ## Project Information
 
