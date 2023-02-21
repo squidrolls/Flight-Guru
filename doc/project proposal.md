@@ -22,3 +22,6 @@ On our application, users can search up flights by flight number or by: departur
 ## Work Distribution
 
 We plan to split the work between front-end and back-end, with David and Yijing working on the back end, and Chris and Jake working on the front end. We plan to use both Python and MySQL for the back-end, and JavaScript and HTML for the front-end; if we need to incorporate any other language or resource, we will make that decision when the time comes. The backend team is working on setting up and populating our databases, and creating a functional user authentication system. Our front end team is going to work on building the website, making it usable and making it look good, and they will also work on data analysis.
+
+## UI Mockup
+[Mock UI.pdf](https://github.com/cs411-alawini/sp23-cs411-team065-team065/files/10797181/Mock.UI.pdf)
