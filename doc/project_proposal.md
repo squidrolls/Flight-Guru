@@ -62,3 +62,4 @@ We plan to split the work between front-end and back-end, with David and Yijing 
   
 
 ## Mock UI
+<img src="Mock_UI_Page_1.png" width="600">
