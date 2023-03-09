@@ -110,4 +110,7 @@ After I created an index for CANCELLATION_TYPE the index lookup seems to be happ
 
 <img src="images/expa8.png" width="600">
 
+<img src="images/expa10.png" width="600">
+
 <img src="images/expa9.png" width="600">
+
