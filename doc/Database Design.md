@@ -62,7 +62,18 @@ CREATE TABLE `planes` (
   CONSTRAINT `AIRLINE` FOREIGN KEY (`AIRLINE`) REFERENCES `airline` (`airlineID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 ```
-
+## Adding Data to Tables
+Only displaying the tables with over 1000 rows:
 <img src="images/delays count.png" width="100">
 <img src="images/flights count.png" width="100">
 <img src="images/planes count.png" width="100">
+
+## Advanced Queries
+
+Total Number of Cancelled Flights for Each Airport:
+
+<img src="images/advanced query 1.png" width="600">
+
+Average Delay Time for Each Airline
+
+<img src="images/advanced query 2.png" width="600">
