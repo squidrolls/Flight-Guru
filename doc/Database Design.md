@@ -76,4 +76,4 @@ Total Number of Cancelled Flights for Each Airport:
 
 Average Delay Time for Each Airline
 
-<img src="images/advanced query 2.png" width="600">
+<img src="images/advanced query 2.png" width="800">
