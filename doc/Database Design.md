@@ -63,6 +63,6 @@ CREATE TABLE `planes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 ```
 
-<img src="images/delays count.png" width="600">
-<img src="images/flights count.png" width="600">
-<img src="images/planes count.png" width="600">
+<img src="images/delays count.png" width="100">
+<img src="images/flights count.png" width="100">
+<img src="images/planes count.png" width="100">
