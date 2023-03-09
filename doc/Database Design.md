@@ -79,3 +79,5 @@ Average Delay Time for Each Airline
 <img src="images/advanced query 2.png" width="1000">
 
 This has less than 15 rows because there are less than 15 airlines in the dataset!
+
+## Explain Analyze
