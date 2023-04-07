@@ -9,78 +9,54 @@ def fetch_todo() -> dict:
     """
 
     conn = db.connect()
-    query_results = conn.execute("Select * from tasks;").fetchall()
+    query_results = conn.execute("Select * from airline;").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
         item = {
-            "id": result[0],
-            "task": result[1],
-            "status": result[2]
+            "airlineID": result[0],
+            "name": result[1],
+            # "status": result[2]
         }
         todo_list.append(item)
 
     return todo_list
 
-
-def update_task_entry(task_id: int, text: str) -> None:
-    """Updates task description based on given `task_id`
+def update_task_entry(old_airlineID: str, new_airlineID: str, name: str) -> None:
+    """Updates task description based on given `old_airlineID`
 
     Args:
-        task_id (int): Targeted task_id
-        text (str): Updated description
+        old_airlineID (str): The old airline ID
+        new_airlineID (str): The new airline ID
+        name (str): Updated name
 
     Returns:
         None
     """
 
     conn = db.connect()
-    query = 'Update tasks set task = "{}" where id = {};'.format(text, task_id)
+    
+    if old_airlineID != new_airlineID:
+        # Update the airline ID and the name
+        query = 'UPDATE airline SET airlineID = "{}", name = "{}" WHERE airlineID = "{}";'.format(new_airlineID, name, old_airlineID)
+    else:
+        # Only update the name
+        query = 'UPDATE airline SET name = "{}" WHERE airlineID = "{}";'.format(name, old_airlineID)
+    
     conn.execute(query)
     conn.close()
 
-
-def update_status_entry(task_id: int, text: str) -> None:
-    """Updates task status based on given `task_id`
-
-    Args:
-        task_id (int): Targeted task_id
-        text (str): Updated status
-
-    Returns:
-        None
-    """
-
+def insert_new_task(airlineID: str, name: str) -> None:
     conn = db.connect()
-    query = 'Update tasks set status = "{}" where id = {};'.format(text, task_id)
-    conn.execute(query)
+    query = 'INSERT INTO airline (airlineID, name) VALUES (%s, %s);'
+    conn.execute(query, (airlineID, name))
     conn.close()
 
-
-def insert_new_task(text: str) ->  int:
-    """Insert new task to todo table.
-
-    Args:
-        text (str): Task description
-
-    Returns: The task ID for the inserted entry
-    """
-
-    conn = db.connect()
-    query = 'Insert Into tasks (task, status) VALUES ("{}", "{}");'.format(
-        text, "Todo")
-    conn.execute(query)
-    query_results = conn.execute("Select LAST_INSERT_ID();")
-    query_results = [x for x in query_results]
-    task_id = query_results[0][0]
-    conn.close()
-
-    return task_id
-
-
-def remove_task_by_id(task_id: int) -> None:
+def remove_task_by_id(airlineID: str) -> None:
     """ remove entries based on task ID """
     conn = db.connect()
-    query = 'Delete From tasks where id={};'.format(task_id)
-    conn.execute(query)
+    # query = 'Delete From airline where airlineID={};'.format(airlineID)
+    # conn.execute(query)
+    query = "DELETE FROM airline WHERE airlineID=%s;"
+    conn.execute(query, (airlineID,))
     conn.close()
