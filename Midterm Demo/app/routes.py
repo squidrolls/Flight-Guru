@@ -3,35 +3,31 @@ from flask import render_template, request, jsonify
 from app import app
 from app import database as db_helper
 
-@app.route("/delete/<int:task_id>", methods=['POST'])
-def delete(task_id):
+@app.route("/delete/<string:airlineID>", methods=['POST'])
+def delete(airlineID):
     """ recieved post requests for entry delete """
 
     try:
-        db_helper.remove_task_by_id(task_id)
-        result = {'success': True, 'response': 'Removed task'}
+        db_helper.remove_task_by_id(airlineID)
+        result = {'success': True, 'response': 'Removed name'}
     except:
         result = {'success': False, 'response': 'Something went wrong'}
 
     return jsonify(result)
 
-
-@app.route("/edit/<int:task_id>", methods=['POST'])
-def update(task_id):
-    """ recieved post requests for entry updates """
+@app.route("/edit/<string:old_airlineID>", methods=['POST'])
+def update(old_airlineID):
+    """ received post requests for entry updates """
 
     data = request.get_json()
 
+    print("Data received:", data)  # For debugging
+
     try:
-        if "status" in data:
-            db_helper.update_status_entry(task_id, data["status"])
-            result = {'success': True, 'response': 'Status Updated'}
-        elif "description" in data:
-            db_helper.update_task_entry(task_id, data["description"])
-            result = {'success': True, 'response': 'Task Updated'}
-        else:
-            result = {'success': True, 'response': 'Nothing Updated'}
-    except:
+        db_helper.update_task_entry(old_airlineID, data["airlineID"], data["name"])  # Updated this line
+        result = {'success': True, 'response': 'Task Updated'}
+    except Exception as e:  # Catch the exception to print the error message
+        print("Error:", e)  # For debugging
         result = {'success': False, 'response': 'Something went wrong'}
 
     return jsonify(result)
@@ -39,10 +35,16 @@ def update(task_id):
 
 @app.route("/create", methods=['POST'])
 def create():
-    """ recieves post requests to add new task """
+    """ receives post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task(data['description'])
-    result = {'success': True, 'response': 'Done'}
+    print("Create Data received:", data)  # For debugging
+    try:
+        db_helper.insert_new_task(data['airlineID'], data['name'])
+        result = {'success': True, 'response': 'Task Created'}
+    except Exception as e:  # Catch the exception to print the error message
+        print("Error:", e)  # For debugging
+        result = {'success': False, 'response': 'Something went wrong'}
+
     return jsonify(result)
 
 
