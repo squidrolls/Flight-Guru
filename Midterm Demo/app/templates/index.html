@@ -1,137 +1,52 @@
 <!DOCTYPE html>
-
 <html>
     <head>
-        <title>Demo: TODO</title>
-
+        <title>Demo: Flight_Guru</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <link rel="icon" href="{{ url_for('static', filename='img/cs.ico') }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}">
-
     </head>
-
     <body>
-
-    <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">Flight Guru</h1>
-      <p><mark>Do it now.</mark></p>
-    </main>
-    
-
-    <div class="container">    
+        <main role="main" class="container extra-bottom">
+            <h1 class="mt-5">
+                <a href="/" style="text-decoration: none; color: inherit;">Flight Guru</a>
+            </h1>
+            <p><mark>Everything about flights.</mark></p>
+        </main>
         
-        <!-- Button trigger modal -->
-        <div style="text-align: right;">
-        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add airline</button>
-        </div>
-
         
-        <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add a task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- <div class="modal-body">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Task</span>
-                    <input type="text" class="form-control" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-            </div> -->
-
-
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="airlineID-input">Airline ID</label>
-                        <input type="text" class="form-control" id="airlineID-input" placeholder="Enter airline ID">
-                    </div>
-                    <div class="form-group">
-                        <label for="name-input">Name</label>
-                        <input type="text" class="form-control" id="name-input" placeholder="Enter name">
-                    </div>
-                </form>
-            </div>
-
-
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
+        <div class="container mb-3">
+            <a class="btn btn-primary" href="{{ url_for('airline') }}">Airline</a>
+            <a class="btn btn-primary" href="{{ url_for('airports') }}">Airports</a>
+            <a class="btn btn-primary" href="{{ url_for('flights') }}">Flights</a>
+            <a class="btn btn-primary" href="{{ url_for('planes') }}">planes</a>
+            <a class="btn btn-primary" href="{{ url_for('airline_delays') }}">Airline Delay</a>
+            <a class="btn btn-primary" href="{{ url_for('cancelled_flights_by_states') }}">Airport_Cancelled Flights</a>
         </div>
-        </div>
-
-    </div>
-
-    <!--Todo Table-->
-    <div class="container table-responsive">          
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="task-id">AirlineID</th>
-            <th class="task">Name</th>
-            <!-- <th class="status">Status</th> -->
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for item in items %}
-            <!-- <tr>
-                <td>{{item.airlineID}}</td>
-                <td>{{item.name}}</td>
-
-                {% if item.status == "In Progress" %}
-                    <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Todo" %}
-                    <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Complete" %}
-                    <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{airlineID}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{airlineID}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
-            </tr> -->
-            <tr>
-                <td>{{item.airlineID}}</td>
-                <td>{{item.name}}</td>
-                
-               <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.airlineID}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.airlineID}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
-            </tr>
-        {% endfor %}
         
-        </tbody>
-    </table>
-    </div>
+
+        {% block content %}
+        {% endblock %}
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted"><small>App developed for CS411 UIUC</small></p>
+            </div>
+        </footer>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
+
+        <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
-    <footer class="footer">
-      <div class="container">
-            <p class="text-muted"><small>App developed for CS411 UIUC by @tcheng10</small></p>
-      </div>
-    </footer>
-  </body>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
-
+    </body>
 </html>

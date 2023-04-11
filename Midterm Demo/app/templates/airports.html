@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <!-- <h2>Airports</h2> -->
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Airport ID</th>
+                <th>Airport</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for airport in airports %}
+                <tr>
+                    <td>{{ airport.airportID }}</td>
+                    <td>{{ airport.AIRPORT }}</td>
+                    <td>{{ airport.CITY }}</td>
+                    <td>{{ airport.STATE }}</td>
+                    <td>{{ airport.COUNTRY }}</td>
+                    <td>{{ airport.LATITUDE }}</td>
+                    <td>{{ airport.LONGITUDE }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

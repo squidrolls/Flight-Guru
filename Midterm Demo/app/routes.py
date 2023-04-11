@@ -53,3 +53,65 @@ def homepage():
     """ returns rendered homepage """
     items = db_helper.fetch_todo()
     return render_template("index.html", items=items)
+
+
+
+
+@app.route('/airline')
+def airline():
+    airlines = db_helper.fetch_todo()
+    return render_template('airline.html', items=airlines)
+
+@app.route('/airline_delays')
+def airline_delays():
+    delays = db_helper.get_average_delays()
+    return render_template('airline_delays.html', delays=delays)
+
+# @app.route('/airport_cancelled_flights')
+# def airport_cancelled_flights():
+#     cancels = db_helper.get_cancelled_flights()
+#     return render_template('airport_cancelled_flights.html', cancels=cancels)
+
+@app.route('/cancelled_flights_by_states', methods=['GET', 'POST'])
+def cancelled_flights_by_states():
+    if request.method == 'POST':
+        states = request.form.getlist('states')
+        cancelled_flights = db_helper.get_cancelled_flights_by_states(states)
+        return render_template('cancelled_flights_by_states.html', cancelled_flights=cancelled_flights, selected_states=states)
+    return render_template('cancelled_flights_by_states.html')
+
+
+# @app.route('/cancelled_flights_by_states', methods=['POST'])
+# def cancelled_flights_by_states():
+#     states = request.form.getlist('states[]')
+#     cancelled_flights = db_helper.get_cancelled_flights_by_states(states)
+#     return render_template('cancelled_flights_by_states.html', cancelled_flights=cancelled_flights)
+
+
+@app.route('/')
+def main():
+    return render_template('index.html')
+
+@app.route('/airports')
+def airports():
+    airports_data = db_helper.fetch_airports()
+    return render_template('airports.html', airports=airports_data)
+
+@app.route('/flights')
+def flights():
+    flights = db_helper.get_all_flights()
+    return render_template('flights.html', flights=flights)
+
+@app.route('/search_flights', methods=['POST'])
+def search_flights():
+    tail_number = request.form.get('search_tail_number', '').strip()
+    if tail_number:
+        flights = db_helper.search_flights_by_tail_number(tail_number)
+    else:
+        flights = db_helper.get_all_flights()
+    return render_template('flights.html', flights=flights)
+
+@app.route('/planes')
+def planes():
+    planes = db_helper.get_all_planes()
+    return render_template('planes.html', planes=planes)
