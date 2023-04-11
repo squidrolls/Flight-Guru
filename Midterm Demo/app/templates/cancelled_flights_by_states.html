@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container">
-    <h2>Cancelled Flights by States</h2>
+    <!-- <h2>Cancelled Flights by States</h2> -->
     <form action="{{ url_for('cancelled_flights_by_states') }}" method="POST">
         <label>Select states:</label>
         <select name="states" multiple="multiple" class="form-control" size="5">
@@ -62,12 +62,13 @@
     </form>
 
     {% if cancelled_flights %}
-    <table class="table mt-4">
+    
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Airport</th>
                 <th>State</th>
-                <th>Number of Cancelled Flights</th>
+                <th>No. of Cancelled Flights</th>
             </tr>
         </thead>
         <tbody>

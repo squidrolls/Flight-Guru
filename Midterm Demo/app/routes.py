@@ -2,6 +2,7 @@
 from flask import render_template, request, jsonify
 from app import app
 from app import database as db_helper
+import pymysql
 
 @app.route("/delete/<string:airlineID>", methods=['POST'])
 def delete(airlineID):
@@ -16,12 +17,12 @@ def delete(airlineID):
     return jsonify(result)
 
 @app.route("/edit/<string:old_airlineID>", methods=['POST'])
-def update(old_airlineID):
+def edit(old_airlineID):
     """ received post requests for entry updates """
 
     data = request.get_json()
 
-    print("UPDATE Data received:", data)  # For debugging
+    print("EDIT Data received:", data)  # For debugging
 
     try:
         db_helper.update_task_entry(old_airlineID, data["airlineID"], data["name"])  # Updated this line
@@ -43,9 +44,14 @@ def create():
         result = {'success': True, 'response': 'Task Created'}
     except Exception as e:  # Catch the exception to print the error message
         print("Error:", e)  # For debugging
-        result = {'success': False, 'response': 'Something went wrong'}
+        if isinstance(e, pymysql.err.IntegrityError) and e.args[0] == 1062:
+            result = {'success': False, 'response': 'Duplicate entry, add rejected'}
+        else:
+            result = {'success': False, 'response': 'Something went wrong'}
 
     return jsonify(result)
+
+
 
 
 @app.route("/")

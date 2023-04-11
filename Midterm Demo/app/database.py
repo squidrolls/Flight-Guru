@@ -29,9 +29,6 @@ def update_task_entry(old_airlineID: str, new_airlineID: str, name: str) -> None
         old_airlineID (str): The old airline ID
         new_airlineID (str): The new airline ID
         name (str): Updated name
-
-    Returns:
-        None
     """
     conn = db.connect()
     
