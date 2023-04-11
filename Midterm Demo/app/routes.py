@@ -21,7 +21,7 @@ def update(old_airlineID):
 
     data = request.get_json()
 
-    print("Data received:", data)  # For debugging
+    print("UPDATE Data received:", data)  # For debugging
 
     try:
         db_helper.update_task_entry(old_airlineID, data["airlineID"], data["name"])  # Updated this line
@@ -104,12 +104,18 @@ def flights():
 
 @app.route('/search_flights', methods=['POST'])
 def search_flights():
-    tail_number = request.form.get('search_tail_number', '').strip()
-    if tail_number:
-        flights = db_helper.search_flights_by_tail_number(tail_number)
+    airline = request.form.get('search_airline', '').strip()
+    flight_number = request.form.get('search_flight_number', '').strip()
+    search_date = request.form.get('search_date', '').strip()
+
+    if airline or flight_number or search_date:
+        flights = db_helper.search_flights_by_airline_flight_number_or_date(airline, flight_number, search_date)
     else:
         flights = db_helper.get_all_flights()
+
     return render_template('flights.html', flights=flights)
+
+
 
 @app.route('/planes')
 def planes():

@@ -50,30 +50,12 @@
             <th class="task">Name</th>
             <!-- <th class="status">Status</th> -->
             <th class="update">Edit</th>
-            <th class="update">Remove</th>
+            <th class="remove">Remove</th>
         </tr>
         </thead>
 
         <tbody>
         {% for item in items %}
-            <!-- <tr>
-                <td>{{item.airlineID}}</td>
-                <td>{{item.name}}</td>
-
-                {% if item.status == "In Progress" %}
-                    <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Todo" %}
-                    <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Complete" %}
-                    <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{airlineID}}">{{item.status}}</button></td>
-                {%endif%}
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{airlineID}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{airlineID}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
-            </tr> -->
             <tr>
                 <td>{{item.airlineID}}</td>
                 <td>{{item.name}}</td>

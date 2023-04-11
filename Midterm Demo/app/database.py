@@ -33,10 +33,9 @@ def update_task_entry(old_airlineID: str, new_airlineID: str, name: str) -> None
     Returns:
         None
     """
-
     conn = db.connect()
     
-    if old_airlineID != new_airlineID:
+    if old_airlineID != new_airlineID :
         # Update the airline ID and the name
         query = 'UPDATE airline SET airlineID = "{}", name = "{}" WHERE airlineID = "{}";'.format(new_airlineID, name, old_airlineID)
     else:
@@ -153,13 +152,32 @@ def get_all_planes():
     return planes
 
 
-def search_flights_by_tail_number(tail_number):
+def search_flights_by_airline_flight_number_or_date(airline, flight_number, search_date):
     conn = db.connect()
-    query = conn.execute("SELECT * FROM flights WHERE TAIL_NUMBER = %s", (tail_number,))
+
+    conditions = []
+    params = []
+
+    if airline:
+        conditions.append("AIRLINE = %s")
+        params.append(airline)
+
+    if flight_number:
+        conditions.append("FLIGHT_NUMBER = %s")
+        params.append(flight_number)
+
+    if search_date:
+        conditions.append("DATE = %s")
+        params.append(search_date)
+
+    query_conditions = " AND ".join(conditions)
+
+    query = conn.execute(f"SELECT * FROM flights WHERE {query_conditions}", params)
     query_results = query.fetchall()
     conn.close()
 
     flights = [dict(row) for row in query_results]
     return flights
+
 
     

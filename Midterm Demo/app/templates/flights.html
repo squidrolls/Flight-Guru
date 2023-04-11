@@ -4,33 +4,36 @@
 <div class="container">
     <form class="mt-3" action="{{ url_for('search_flights') }}" method="POST">
         <div class="input-group">
-            <input type="text" class="form-control" name="search_tail_number" placeholder="Search by Tail Number">
+            <input type="date" class="form-control" name="search_date" placeholder="Search by Date">
+            <input type="text" class="form-control" name="search_airline" placeholder="Search by Airline">
+            <input type="text" class="form-control" name="search_flight_number" placeholder="Search by Flight Number">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </div>
         </div>
     </form>
 
+
     
-    <table class="table">
-        <thead>
-            <tr>
-                {% if flights %}
-                    {% for column_name in flights[0].keys() %}
-                        <th>{{ column_name }}</th>
-                    {% endfor %}
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for flight in flights %}
+    <table class="table table-striped">
+            <thead>
                 <tr>
-                    {% for value in flight.values() %}
-                        <td>{{ value }}</td>
-                    {% endfor %}
+                    {% if flights %}
+                        {% for column_name in flights[0].keys() %}
+                            <th>{{ column_name }}</th>
+                        {% endfor %}
+                    {% endif %}
                 </tr>
-            {% endfor %}
-        </tbody>
+            </thead>
+            <tbody>
+                {% for flight in flights %}
+                    <tr>
+                        {% for value in flight.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
     </table>
 </div>
 {% endblock %}
