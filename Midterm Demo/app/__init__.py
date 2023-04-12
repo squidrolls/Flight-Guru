@@ -21,7 +21,7 @@ def init_connection_engine():
             variables = load(open("app.yaml"), Loader=Loader)
         except OSError as e:
             print("Make sure you have the app.yaml file setup")
-            os.exit()
+            exit(1) # FAILURE
 
         env_variables = variables['env_variables']
         for var in env_variables:
@@ -33,7 +33,9 @@ def init_connection_engine():
             username=os.environ.get('MYSQL_USER'),
             password=os.environ.get('MYSQL_PASSWORD'),
             database=os.environ.get('MYSQL_DB'),
-            host=os.environ.get('MYSQL_HOST')
+            host=os.environ.get('MYSQL_HOST'),
+            port=int(os.environ.get('MYSQL_PORT')),
+            query={}
         )
     )
 
