@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% if planes %}
+                    {% for column_name in planes[0].keys() %}
+                        <th>{{ column_name }}</th>
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for planes in planes %}
+                <tr>
+                    {% for value in planes.values() %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

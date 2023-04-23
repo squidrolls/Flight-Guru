@@ -1,0 +1,77 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container">    
+        
+        <!-- Button trigger modal -->
+        <div style="text-align: right;">
+        <!-- <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New airlineID">Add airline</button> -->
+        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New airlineID" id="add-airline-button">Add airline</button>
+        </div>
+
+        
+        <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Label">Add a airline</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="airlineID-input">Airline ID</label>
+                        <input type="text" class="form-control" id="airlineID-input" placeholder="Enter airline ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="name-input">Name</label>
+                        <input type="text" class="form-control" id="name-input" placeholder="Enter name">
+                    </div>
+                </form>
+            </div>
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+    <!--Todo Table-->
+    <div class="container table-responsive">          
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="task-id">AirlineID</th>
+            <th class="task">Name</th>
+            <!-- <th class="status">Status</th> -->
+            <th class="update">Edit</th>
+            <th class="remove">Remove</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{item.airlineID}}</td>
+                <td>{{item.name}}</td>
+                
+               <!-- <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.airlineID}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td> -->
+               <td><button type="button" class="btn btn-outline-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.airlineID}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+
+                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.airlineID}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+    </div>
+
+
+        
+    {% endblock %}

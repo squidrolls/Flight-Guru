@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container table-responsive">          
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Airline</th>
+        <th>Average Delay</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for delay in delays %}
+        <tr>
+          <td>{{ delay[0] }}</td>
+          <td>{{ delay[1] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+
+
