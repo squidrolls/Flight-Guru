@@ -132,16 +132,6 @@ def fetch_airports() -> list:
     return airports_list
 
 
-
-def get_all_flights():
-    conn = db.connect()
-    query_results = conn.execute("SELECT * FROM flights LIMIT 200;").fetchall()
-    conn.close()
-
-    flights = [dict(row) for row in query_results]
-    return flights
-
-
 def get_all_planes():
     conn = db.connect()
     query_results = conn.execute("SELECT * FROM planes;").fetchall()
@@ -150,6 +140,19 @@ def get_all_planes():
     planes = [dict(row) for row in query_results]
     return planes
 
+
+def get_all_flights():
+    conn = db.connect()
+    query_results = conn.execute("""
+        SELECT DATE, AIRLINE, FLIGHT_NUMBER, TAIL_NUMBER,ORIGIN_AIRPORT, DESTINATION_AIRPORT, SCHEDULED_DEPARTURE, SCHEDULED_ARRIVAL, cancellations.status as CANCELLATION_REASON
+        FROM flights
+        LEFT JOIN cancellations ON flights.CANCELLATION_TYPE = cancellations.type
+        LIMIT 200;
+    """).fetchall()
+    conn.close()
+
+    flights = [dict(row) for row in query_results]
+    return flights
 
 def search_flights_by_airline_flight_number_or_date(airline, flight_number, search_date):
     conn = db.connect()
@@ -171,7 +174,12 @@ def search_flights_by_airline_flight_number_or_date(airline, flight_number, sear
 
     query_conditions = " AND ".join(conditions)
 
-    query = conn.execute(f"SELECT * FROM flights WHERE {query_conditions}", params)
+    query = conn.execute(f"""
+        SELECT DATE, AIRLINE, FLIGHT_NUMBER, TAIL_NUMBER,ORIGIN_AIRPORT, DESTINATION_AIRPORT, SCHEDULED_DEPARTURE, SCHEDULED_ARRIVAL, cancellations.status as CANCELLATION_REASON
+        FROM flights
+        LEFT JOIN cancellations ON flights.CANCELLATION_TYPE = cancellations.type
+        WHERE {query_conditions}
+    """, params)
     query_results = query.fetchall()
     conn.close()
 
@@ -179,23 +187,6 @@ def search_flights_by_airline_flight_number_or_date(airline, flight_number, sear
     return flights
 
 
-# def fetch_all_airport_ids():
-#     conn = db.connect()
-#     query_results = conn.execute("SELECT airportID FROM airports").fetchall()
-#     conn.close()
-
-#     airport_ids = [result[0] for result in query_results]
-#     return airport_ids
-
-# def update_cancellation_rate(airport_id):
-#     conn = db.connect()
-#     conn.execute("CALL update_cancellation_rate(%s)", (airport_id,))
-#     conn.close()
-
-# def update_all_cancellation_rates():
-#     airport_ids = fetch_all_airport_ids()
-#     for airport_id in airport_ids:
-#         update_cancellation_rate(airport_id)
 
 
 
@@ -304,3 +295,143 @@ def fetch_cancelled_flights_by_state(states=None):
 
 
 
+
+
+
+
+
+def get_user_password(username: str):
+    conn = db.connect()
+    query_results = conn.execute(text("SELECT password FROM users WHERE username = :username"), {'username': username}).fetchone()
+    conn.close()
+    if query_results:
+        return query_results[0]
+    return None
+
+
+def check_user_credentials(username, password) -> int:
+    conn = db.connect()
+    query = "SELECT password FROM users WHERE username = :username"
+    result = conn.execute(text(query), {"username": username}).fetchone()
+    conn.close()
+
+    if result is None:
+        return 1  # User not found
+    elif result[0] == password:
+        return 0  # Correct credentials
+    else:
+        return 2  # Incorrect password
+
+
+def update_user_password(username: str, new_password: str):
+    conn = db.connect()
+    query = text("UPDATE users SET password = :new_password WHERE username = :username")
+    conn.execute(query, {"username": username, "new_password": new_password})
+    conn.close()
+
+
+def create_user(username: str, password: str) -> bool:
+    conn = db.connect()
+    try:
+        conn.execute(text("INSERT INTO users (username, password) VALUES (:username, :password)"), {'username': username, 'password': password})
+        conn.close()
+        return True
+    except:
+        conn.close()
+        return False
+
+def username_exists(username: str) -> bool:
+    """Checks if a given username already exists in the database
+    """
+    conn = db.connect()
+    result = conn.execute(text("SELECT COUNT(*) FROM users WHERE username = :username"), {'username': username}).scalar()
+    conn.close()
+
+    return result > 0
+
+
+def get_flights_with_cancellation_type_0():
+    conn = db.connect()
+    query_results = conn.execute("""
+        SELECT DATE, AIRLINE, FLIGHT_NUMBER, TAIL_NUMBER,ORIGIN_AIRPORT, DESTINATION_AIRPORT, SCHEDULED_DEPARTURE, SCHEDULED_ARRIVAL,cancellations.status as CANCELLATION_REASON
+        FROM flights
+        LEFT JOIN cancellations ON flights.CANCELLATION_TYPE = cancellations.type
+        WHERE CANCELLATION_TYPE = 0
+        LIMIT 200;
+    """).fetchall()
+    conn.close()
+
+    flights = [dict(row) for row in query_results]
+    return flights
+
+
+
+
+def add_subscription(username, airline, flight_number, tail_number, date, scheduled_departure, status):
+    conn = db.connect()
+    conn.execute(
+        "INSERT INTO subscription (username, airline, flight_number, tail_number, date, scheduled_departure, status) VALUES (%s, %s, %s, %s, %s, %s, %s);",
+        (username, airline, flight_number, tail_number, date, scheduled_departure, status)
+    )
+    
+    conn.close()
+
+
+def get_subscribed_flights(username):
+    conn = db.connect()
+    query_results = conn.execute("""
+        SELECT f.DATE, f.AIRLINE, f.FLIGHT_NUMBER, f.TAIL_NUMBER, f.SCHEDULED_DEPARTURE, f.SCHEDULED_ARRIVAL, cancellations.status as STATUS
+        FROM flights f
+        JOIN subscription ON (f.FLIGHT_NUMBER = subscription.flight_number AND f.AIRLINE = subscription.airline AND f.DATE=subscription.date)
+        LEFT JOIN cancellations ON f.CANCELLATION_TYPE = cancellations.type
+        WHERE subscription.username = %s;
+    """, (username,)).fetchall()
+    conn.close()
+
+    flights = [dict(row) for row in query_results]
+    return flights
+
+
+
+
+def remove_subscription(username, flight_number, airline):
+    conn = db.connect()
+    conn.execute(
+        "DELETE FROM subscription WHERE username = %s AND flight_number = %s AND airline = %s;",
+        (username, flight_number, airline)
+    )
+    conn.close()
+
+
+def search_user_subscribed_flights_by_airline_flight_number_or_date(username, airline, flight_number, search_date):
+    conn = db.connect()
+
+    conditions = []
+    params = [username]
+
+    if airline:
+        conditions.append("AIRLINE = %s")
+        params.append(airline)
+
+    if flight_number:
+        conditions.append("FLIGHT_NUMBER = %s")
+        params.append(flight_number)
+
+    if search_date:
+        conditions.append("DATE = %s")
+        params.append(search_date)
+
+    query_conditions = " AND ".join(conditions)
+
+    query = conn.execute(f"""
+        SELECT DATE, AIRLINE, FLIGHT_NUMBER, TAIL_NUMBER,ORIGIN_AIRPORT, DESTINATION_AIRPORT, SCHEDULED_DEPARTURE, SCHEDULED_ARRIVAL,cancellations.status as CANCELLATION_REASON
+        FROM flights
+        LEFT JOIN cancellations ON flights.CANCELLATION_TYPE = cancellations.type
+        WHERE CANCELLATION_TYPE = 0 AND {query_conditions}
+    """, params)
+
+    query_results = query.fetchall()
+    conn.close()
+
+    subscribed_flights = [dict(row) for row in query_results]
+    return subscribed_flights

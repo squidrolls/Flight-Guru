@@ -1,30 +1,7 @@
-{% extends "index.html" %}
-
-
-{% block content %}
+<!-- 
 
 <div id="map" style="width: 65%; height: 600px; margin-top: 20px; margin-left: auto; margin-right: auto;"></div>
 
-<!-- <script>
-    var map = L.map('map').setView([37.8, -96], 4);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    {% if cancelled_flights %}
-    var cancelledFlights = {{ cancelled_flights|tojson }};
-    cancelledFlights.forEach(function (flight) {
-        var lat = flight['LATITUDE'];
-        var lon = flight['LONGITUDE'];
-        var airport = flight['AIRPORT'];
-        var state = flight['STATE'];
-        var numCancelled = flight['Number of Cancelled Flights'];
-
-        var marker = L.marker([lat, lon]).addTo(map);
-        marker.bindPopup(`<b>${airport}</b><br>${state}<br>Cancelled Flights: ${numCancelled}`);
-    });
-    {% endif %}
-</script> -->
 <script>
     var cancelledFlights = {{ cancelled_flights|tojson }};
     console.log(cancelledFlights);
@@ -162,7 +139,6 @@
     </table>
     {% endif %}
 </div>
-{% endblock %}
 
 
-
+ -->

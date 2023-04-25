@@ -3,8 +3,21 @@
 {% block content %}
     <!-- <h2>Airports</h2> -->
 
-    <table class="table table-striped">
-        <thead>
+        <!-- Search bar -->
+        <div class="text-center" style="margin-top: 20px; margin-bottom: 20px;">
+            <input type="text" id="search_airport" class="form-control" placeholder="Search airport" list="airport_list" style="display: inline-block; width: 350px;">
+            <datalist id="airport_list">
+                {% for airport in airports %}
+                    <option value="{{ airport.AIRPORT }}">
+                {% endfor %}
+            </datalist>
+            <button type="button" class="btn btn-outline-info" id="search_button">Search</button>
+            <button type="button" class="btn btn-outline-secondary" id="reset_button">Reset</button>
+
+        </div>
+
+    <table class="table table-hover">
+        <thead class="thead-light">
             <tr>
                 <th>Airport ID</th>
                 <th>Airport</th>
@@ -15,7 +28,7 @@
                 <th>Longitude</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="airport_table_body">
             {% for airport in airports %}
                 <tr>
                     <td>{{ airport.airportID }}</td>
@@ -29,4 +42,48 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        document.getElementById('search_button').addEventListener('click', function() {
+            let input = document.getElementById('search_airport').value.toLowerCase();
+            let table = document.getElementById('airport_table_body');
+            let rows = table.getElementsByTagName('tr');
+    
+            for (let i = 0; i < rows.length; i++) {
+                let airportName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+                if (airportName.includes(input)) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    </script>
+
+    <script>
+    document.getElementById('search_button').addEventListener('click', function() {
+        filterTable();
+    });
+
+    document.getElementById('reset_button').addEventListener('click', function() {
+        document.getElementById('search_airport').value = '';
+        filterTable();
+    });
+
+    function filterTable() {
+        let input = document.getElementById('search_airport').value.toLowerCase();
+        let table = document.getElementById('airport_table_body');
+        let rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let airportName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+            if (airportName.includes(input)) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+    </script>
+    
 {% endblock %}
