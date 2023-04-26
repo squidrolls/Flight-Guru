@@ -5,8 +5,7 @@
 1. place the project to GCP.
 2. testing to check if there are any bugs
 3. improve the UI.
-4. there is a problem with the planes table. It only has 10 distinct airlines, but we actually have 14 airlines. Maybe there was some problem while importing the data into the database…
-5. …
+4. …
 
 ---
 
