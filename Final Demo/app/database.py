@@ -154,6 +154,17 @@ def get_all_flights():
     flights = [dict(row) for row in query_results]
     return flights
 
+def get_all_delays():
+    conn = db.connect()
+    query_results = conn.execute("""
+        SELECT *
+        FROM delays
+        LIMIT 200;""").fetchall()
+    conn.close()
+
+    delays = [dict(row) for row in query_results]
+    return delays
+
 def search_flights_by_airline_flight_number_or_date(airline, flight_number, search_date):
     conn = db.connect()
 
@@ -185,6 +196,37 @@ def search_flights_by_airline_flight_number_or_date(airline, flight_number, sear
 
     flights = [dict(row) for row in query_results]
     return flights
+
+def search_delays_by_airline_flight_number_or_date(airline, flight_number, search_date):
+    conn = db.connect()
+
+    conditions = []
+    params = []
+
+    if airline:
+        conditions.append("AIRLINE = %s")
+        params.append(airline)
+
+    if flight_number:
+        conditions.append("FLIGHT_NUMBER = %s")
+        params.append(flight_number)
+
+    if search_date:
+        conditions.append("DATE = %s")
+        params.append(search_date)
+
+    query_conditions = " AND ".join(conditions)
+
+    query = conn.execute(f"""
+        SELECT *
+        FROM delays
+        WHERE {query_conditions}
+    """, params)
+    query_results = query.fetchall()
+    conn.close()
+
+    delays = [dict(row) for row in query_results]
+    return delays
 
 
 

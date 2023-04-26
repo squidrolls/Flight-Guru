@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<div class="container" style="margin-top: 50px;">
+    <form class="mt-3" action="{{ url_for('search_delays') }}" method="POST">
+        <div class="input-group">
+            <input type="date" class="form-control" name="search_date" placeholder="Search by Date" style="margin-right: 5pt;">
+            <input type="text" class="form-control" name="search_airline" placeholder="Airline" style="margin-right: 5pt;">
+            <input type="text" class="form-control" name="search_flight_number" placeholder="Flight Number" style="margin-right: 5pt;">
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+    
+<table class="table" style="margin-top: 25px;">
+    <thead class="thead-light">
+        <tr>
+            {% if delays %}
+                {% for column_name in delays[0].keys() %}
+                    <th>{{ column_name }}</th>
+                {% endfor %}
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for delay in delays %}
+            {% set is_cancelled = delay.CANCELLATION_REASON != "Not cancelled" %}
+            <tr {% if is_cancelled %}class="cancelled-row"{% endif %}>
+                {% for column_name, value in delay.items() %}
+                    {% if column_name in ['SCHEDULED_DEPARTURE', 'SCHEDULED_ARRIVAL'] %}
+                        <td>{{ "%02d:%02d"|format(value // 100, value % 100) }}</td>
+                    {% elif column_name == "CANCELLATION_REASON" and is_cancelled %}
+                        <td class="cancelled">{{ value }}</td>
+                    {% else %}
+                        <td>{{ value }}</td>
+                    {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
