@@ -95,6 +95,11 @@ def flights():
     flights = db_helper.get_all_flights()
     return render_template('flights.html', flights=flights)
 
+@app.route('/delayed-flights')
+def delays():
+    delays = db_helper.get_all_delays()
+    return render_template('delays.html', delays=delays)
+
 @app.route('/search_flights', methods=['POST'])
 def search_flights():
     airline = request.form.get('search_airline', '').strip()
@@ -107,6 +112,19 @@ def search_flights():
         flights = db_helper.get_all_flights()
 
     return render_template('flights.html', flights=flights)
+
+@app.route('/search_delays', methods=['POST'])
+def search_delays():
+    airline = request.form.get('search_airline', '').strip()
+    flight_number = request.form.get('search_flight_number', '').strip()
+    search_date = request.form.get('search_date', '').strip()
+
+    if airline or flight_number or search_date:
+        delays = db_helper.search_delays_by_airline_flight_number_or_date(airline, flight_number, search_date)
+    else:
+        delays = db_helper.get_all_delays()
+
+    return render_template('delays.html', delays=delays)
 
 @app.route('/search_subscribed_flights', methods=['POST'])
 def search_subscribed_flights():
