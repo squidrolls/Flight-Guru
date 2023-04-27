@@ -1,12 +1,5 @@
 # 411 final demo 4.24 update
 
-### Remaining work:
-
-1. place the project to GCP.
-2. testing to check if there are any bugs
-3. improve the UI.
-4. …
-
 ---
 
 During the demo, the team should also discuss the following points: 
