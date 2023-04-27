@@ -1,12 +1,12 @@
 # 411 final demo 4.24 update
 
----
 
 During the demo, the team should also discuss the following points: 
 
 1. Explain your choice for the advanced database program and how it is suitable for your application. For example, if you chose a stored procedure+trigger, explain how this choice is suitable for your application.
 2. How did the creative element add extra value to your application?
 3. How would you want to further improve your application? In terms of database design and system optimization?
+   - Currently, our application focuses on the user side. In the future, we plan to add an admin side, allowing administrators to manage flight data directly through the front-end interface, rather than relying on MySQL Workbench.
 4. What were the challenges you faced when implementing and designing the application? How was it the same/different from the original design?
    - Changes in the subscription table design:
      - We designed the username as the primary key. However, during the implementation, we realized that a single user could subscribe to multiple flights, resulting in duplicate primary keys. To resolve this issue, we changed the primary key to an auto-incrementing number.
